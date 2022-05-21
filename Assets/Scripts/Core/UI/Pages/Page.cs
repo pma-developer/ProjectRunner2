@@ -4,7 +4,7 @@ using Zenject;
 namespace Core.UI.Pages
 {
     [RequireComponent(typeof(Canvas))]
-    public abstract class Page : MonoBehaviour, IPage, IInitializable
+    public abstract class Page : MonoBehaviour, IPage
     {
         protected UIManager UIManager;
         private Canvas _canvas;
@@ -19,7 +19,7 @@ namespace Core.UI.Pages
 
         public abstract void Close();
         
-        public void Initialize()
+        public void Start()
         {
             _canvas = GetComponent<Canvas>();
         }

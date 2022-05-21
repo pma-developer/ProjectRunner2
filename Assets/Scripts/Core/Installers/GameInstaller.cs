@@ -5,10 +5,12 @@ namespace Core.Installers
 {
     public class GameInstaller : MonoInstaller
     {
+        [SerializeField]
+        private GameObject uiManagerPrefab;
+
         public override void InstallBindings()
         {
-            PagesInstaller.Install(Container);
-            Container.Bind<UIManager>().AsSingle();
+            Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInNewPrefab(uiManagerPrefab).AsSingle().NonLazy();
         }
     }
 }
