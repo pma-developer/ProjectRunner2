@@ -7,11 +7,11 @@ namespace Core.Installers
     {
         [SerializeField]
         private GameObject uiManagerPrefab;
+        
 
         public override void InstallBindings()
         {
             Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInNewPrefab(uiManagerPrefab).AsSingle().NonLazy();
-            DataInstaller.Install(Container);
         }
     }
 }

@@ -1,14 +1,21 @@
+using Core.Data;
 using UnityEngine;
 using Zenject;
-using Core.Data;
 
 namespace Core.Installers
 {
-    public class DataInstaller : Installer<DataInstaller>
+    [CreateAssetMenu(fileName = "DataInstaller", menuName = "Installers/DataInstaller")]
+    public class DataInstaller : ScriptableObjectInstaller<DataInstaller>
     {
+        [SerializeField]
+        private DataPaths _pathsConfig;
+        
         public override void InstallBindings()
         {
-            Container.Bind<SettingsModel>().AsSingle();
+            Container.Bind<DataPaths>().FromInstance(_pathsConfig).AsSingle();
+            Container.BindInterfacesAndSelfTo<Repository>().AsSingle();
+            
+            Container.BindInterfacesAndSelfTo<SettingsModel>().AsSingle();
         }
     }
 }

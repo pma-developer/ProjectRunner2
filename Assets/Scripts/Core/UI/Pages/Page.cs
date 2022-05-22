@@ -14,11 +14,17 @@ namespace Core.UI.Pages
         {
             UIManager = uiManager;
         }
-        
-        public abstract void Open();
 
-        public abstract void Close();
-        
+        public virtual void Open()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public virtual void Close()
+        {
+            gameObject.SetActive(false);
+        }
+
         public void Start()
         {
             _canvas = GetComponent<Canvas>();

@@ -9,11 +9,13 @@ public class MainMenuAutoLauncher : MonoBehaviour
     private UIManager _uiManager;
 
     [Inject]
-    private void Init(UIManager uiManager) {
+    private void Init(UIManager uiManager)
+    {
         _uiManager = uiManager;
     }
 
-    public void Start() {
+    public void Start()
+    {
         _uiManager.OpenPage<MainMenuPage>();
     }
 }

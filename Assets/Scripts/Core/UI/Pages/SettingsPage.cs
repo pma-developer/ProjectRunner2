@@ -9,17 +9,15 @@ namespace Core.UI.Pages
 {
     public class SettingsPage : Page
     {
+        private Repository _repository;
         private SettingsModel _settings;
 
-        [Header("Volume")]
-        [SerializeField]
-        private Slider _volumeSlider;
-        [SerializeField]
-        private TextMeshProUGUI _volumeValueText;
+        [SerializeField] private Slider _volumeSlider;
+        [SerializeField] private TextMeshProUGUI _volumeValueText;
 
-        [Header("Back")]
-        [SerializeField]
-        private Button _backToMainMenuBtn;
+        [Header("Buttons")] [Space(10f)] int __;
+        [SerializeField] private Button _backToMainMenuBtn;
+        [SerializeField] private Button _saveButton;
 
         [Inject]
         public void Init(SettingsModel settings)
@@ -33,9 +31,21 @@ namespace Core.UI.Pages
                 _volumeValueText,
                 (volumeLevel, t) => t.text = (volumeLevel == 0) ? "Muted" : volumeLevel.ToString()
             ).AddTo(this);
-            _volumeSlider.onValueChanged.AsObservable().Subscribe(val => _settings.AudioVolume.Value = val).AddTo(this);
-            _settings.AudioVolume.SubscribeWithState(_volumeSlider, (volume, slider) => slider.value = volume);
-            _backToMainMenuBtn.onClick.AsObservable().Subscribe(_ => UIManager.ReplacePage<MainMenuPage>()).AddTo(this);
+
+            _volumeSlider.onValueChanged.AsObservable().Subscribe(
+                val => _settings.AudioVolume.Value = val
+            ).AddTo(this);
+
+            _settings.AudioVolume.SubscribeWithState(
+                _volumeSlider,
+                (volume, slider) => slider.value = volume
+            );
+
+            _backToMainMenuBtn.onClick.AsObservable().Subscribe(
+                _ => UIManager.ReplacePage<MainMenuPage>()
+            ).AddTo(this);
+
+            _saveButton.onClick.AsObservable().Subscribe(_ => _settings.Save());
         }
 
         public override void Open()
