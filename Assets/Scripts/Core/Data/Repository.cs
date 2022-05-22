@@ -16,7 +16,7 @@ namespace Core.Data
         {
             _dataPaths = dataPaths;
         }
-        
+
         public void Initialize()
         {
             _settingsDataProvider = new DataProvider<SerializableSettingsModel>(_dataPaths.SettingsFileName);

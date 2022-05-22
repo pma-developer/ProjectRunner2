@@ -25,8 +25,10 @@ namespace Core.UI.Pages
             _settings = settings;
         }
 
-        public void Start()
+        public override void Start()
         {
+            base.Start();
+            
             _settings.AudioVolume.SubscribeWithState(
                 _volumeValueText,
                 (volumeLevel, t) => t.text = (volumeLevel == 0) ? "Muted" : volumeLevel.ToString()

@@ -3,6 +3,7 @@ using UniRx;
 using UnityEngine.UI;
 using Core.Data;
 using TMPro;
+using Unity.VisualScripting;
 using Zenject;
 
 namespace Core.UI.Pages
@@ -22,8 +23,10 @@ namespace Core.UI.Pages
             _settingsModel = settingsModel;
         }
 
-        public void Start()
+        public override void Start()
         {
+            base.Start();
+
             _startBtn.onClick.AsObservable().Subscribe(_ => Debug.Log("Start game")).AddTo(this);
             _settingsBtn.onClick.AsObservable().Subscribe(_ => UIManager.ReplacePage<SettingsPage>()).AddTo(this);
             _exitBtn.onClick.AsObservable().Subscribe(_ => Debug.Log("Should exit")).AddTo(this);
