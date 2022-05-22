@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UniRx;
 using UnityEngine.UI;
+using Core.Data;
+using TMPro;
+using Zenject;
 
 namespace Core.UI.Pages
 {
@@ -9,11 +12,26 @@ namespace Core.UI.Pages
         [SerializeField] private Button _startBtn;
         [SerializeField] private Button _settingsBtn;
         [SerializeField] private Button _exitBtn;
+        [SerializeField] private TextMeshProUGUI _audioInfoText;
 
-        public void Start() {
+        private SettingsModel _settingsModel;
+
+        [Inject]
+        private void Init(SettingsModel settingsModel)
+        {
+            _settingsModel = settingsModel;
+        }
+
+        public void Start()
+        {
             _startBtn.onClick.AsObservable().Subscribe(_ => Debug.Log("Start game")).AddTo(this);
             _settingsBtn.onClick.AsObservable().Subscribe(_ => UIManager.ReplacePage<SettingsPage>()).AddTo(this);
             _exitBtn.onClick.AsObservable().Subscribe(_ => Debug.Log("Should exit")).AddTo(this);
+            _settingsModel.MuteAudio.SubscribeWithState( _audioInfoText, (isMuted, t) =>
+            {
+                if (isMuted) t.text = "Muted";
+                else t.text = "Unmuted";
+            }).AddTo(this);
         }
 
         public override void Open()

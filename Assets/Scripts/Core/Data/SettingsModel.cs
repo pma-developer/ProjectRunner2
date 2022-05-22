@@ -3,11 +3,13 @@ using UniRx;
 namespace Core.Data
 {
    public class SettingsModel {
-      public ReactiveProperty<bool> MuteAudio {get; private set;}
+      public ReadOnlyReactiveProperty<bool> MuteAudio {get; private set;}
+      public ReactiveProperty<float> AudioVolume {get; private set;}
 
       [Inject]
       public SettingsModel() {
-         MuteAudio = new ReactiveProperty<bool>(false);
+         AudioVolume = new ReactiveProperty<float>(50);
+         MuteAudio = AudioVolume.Select(val => val == 0).ToReadOnlyReactiveProperty();
       }
    }
 }
