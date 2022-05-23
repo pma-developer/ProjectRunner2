@@ -7,7 +7,7 @@ namespace Core.Data
 {
     public class DataProvider<TData>
     {
-        private string _dataPath;
+        private readonly string _dataPath;
         
         public DataProvider(string dataPath)
         {
@@ -24,9 +24,12 @@ namespace Core.Data
 
         public TData Load()
         {
+            if (File.Exists(_dataPath) == false) return default;
+            
             using var reader = new StreamReader(_dataPath);
             var json = reader.ReadToEnd();
             return JsonConvert.DeserializeObject<TData>(json);
+
         }
     }
 }

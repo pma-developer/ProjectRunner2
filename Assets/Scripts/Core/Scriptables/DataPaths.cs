@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Core.Data
 {
 
-    [CreateAssetMenu]
+    [CreateAssetMenu(fileName = "DataPaths", menuName = "PresetsAndConfigs/DataPaths")]
     public class DataPaths : ScriptableObject
     {
         public enum FileExtension
