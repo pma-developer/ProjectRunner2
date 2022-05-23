@@ -7,6 +7,7 @@ namespace Core.Data
    [Serializable]
    public class SerializableSettingsModel
    {
+      [Range(0f, 100f)]
       public float masterVolume;
    }
 

@@ -21,7 +21,7 @@ namespace Core.Data
 
         public void Initialize()
         {
-            _settingsDataProvider = new DataProvider<SerializableSettingsModel>(_dataPaths.SettingsFileName);
+            _settingsDataProvider = new DataProvider<SerializableSettingsModel>(_dataPaths.SettingsFilePath);
 
             if (LoadSettings() is null)
             {

@@ -580,6 +580,7 @@ MonoBehaviour:
   _volumeSlider: {fileID: 1989796281135385012}
   _volumeValueText: {fileID: 5492185734532810217}
   _backToMainMenuBtn: {fileID: 7090068583985592392}
+  _saveButton: {fileID: 764773646677572975}
 --- !u!1 &3771966838870808175
 GameObject:
   m_ObjectHideFlags: 0
