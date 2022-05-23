@@ -4,7 +4,7 @@ using Core.Data;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "SettingsPreset", menuName = "PresetsAndConfigs/SettingsPreset")]
-public class SettingsPreset : MonoBehaviour
+public class SettingsPreset : ScriptableObject
 {
     [SerializeField]
     private SerializableSettingsModel _settingsModel;
