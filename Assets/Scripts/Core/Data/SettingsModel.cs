@@ -1,5 +1,5 @@
 using System;
-using System.Runtime.InteropServices;
+using UnityEngine;
 using Zenject;
 using UniRx;
 namespace Core.Data
@@ -25,11 +25,13 @@ namespace Core.Data
       [Inject]
       public SettingsModel(Repository repository)
       {
+         Debug.Log("ASD");
          _repository = repository;
       }
       
       public void Initialize()
       {
+         Debug.Log("ASD2");
          var settings = _repository.LoadSettings();
          AudioVolume = new ReactiveProperty<float>(settings.masterVolume);
          MuteAudio = AudioVolume.Select(val => val == 0).ToReadOnlyReactiveProperty();

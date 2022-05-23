@@ -12,7 +12,7 @@ namespace Core.Installers
         public override void InstallBindings()
         {
             Debug.Log("Installed");
-            Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInNewPrefab(uiManagerPrefab).AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInNewPrefab(uiManagerPrefab).AsSingle();
         }
     }
 }

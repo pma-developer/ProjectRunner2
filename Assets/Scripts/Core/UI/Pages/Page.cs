@@ -12,7 +12,6 @@ namespace Core.UI.Pages
         [Inject]
         private void Init(UIManager uiManager)
         {
-            Debug.Log("Inject");
             UIManager = uiManager;
         }
 
@@ -28,7 +27,6 @@ namespace Core.UI.Pages
 
         public virtual void Start()
         {
-            Debug.Log("start");
             _canvas = GetComponent<Canvas>();
         }
     }
