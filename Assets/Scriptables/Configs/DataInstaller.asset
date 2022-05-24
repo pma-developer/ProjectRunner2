@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44f6b012edecc16468bf310675ed791f, type: 3}
   m_Name: DataInstaller
   m_EditorClassIdentifier: 
-  _pathsConfig: {fileID: 11400000, guid: 8b3510163086cb8449df134d66ad1027, type: 2}
+  _dataPathsConfig: {fileID: 11400000, guid: 8b3510163086cb8449df134d66ad1027, type: 2}
+  _settingsPreset: {fileID: 11400000, guid: 5877d37d876b29242b922602ec6dbf2a, type: 2}

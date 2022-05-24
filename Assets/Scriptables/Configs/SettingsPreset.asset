@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SettingsPreset
   m_EditorClassIdentifier: 
   _settingsModel:
-    masterVolume: 0
+    masterVolume: 50
