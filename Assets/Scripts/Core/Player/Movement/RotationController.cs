@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UniRx;
+using UnityEditor;
 using UnityEngine;
 
 public class RotationController : MonoBehaviour
 {
+    [SerializeField] private bool _invertY;
     [SerializeField] private float _sensitivity;
+    [SerializeField] private float _xRotationBorder;
     [SerializeField] private Transform _cameraTransform;
     [SerializeField] private Transform _playerTransform;
 
@@ -17,6 +21,7 @@ public class RotationController : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
         Observable.EveryUpdate()
             .Subscribe(_ =>
             {
@@ -35,14 +40,14 @@ public class RotationController : MonoBehaviour
     private void UpdateRotations()
     {
         _yRotation += _xMouseDelta;
-        _xRotation += _yMouseDelta;
+        _xRotation += _yMouseDelta * ((-1) + 2 * Convert.ToInt32(_invertY));
 
-        _xRotation = Mathf.Clamp(_xRotation, -90f, 90f);
+        _xRotation = Mathf.Clamp(_xRotation, -_xRotationBorder, _xRotationBorder);
 
-        var rotation = _playerTransform.rotation;
-        rotation = Quaternion.Euler(rotation.x, _yRotation, rotation.z);
+        var playerTransformRotation = _playerTransform.rotation;
+        playerTransformRotation = Quaternion.Euler(playerTransformRotation.x, _yRotation, playerTransformRotation.z);
         
-        _playerTransform.rotation = rotation;
+        _playerTransform.rotation = playerTransformRotation;
         _cameraTransform.rotation = Quaternion.Euler(_xRotation, _yRotation, _cameraTransform.rotation.z);
     }
 }

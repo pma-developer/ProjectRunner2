@@ -6,8 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class MovementController : MonoBehaviour
 {
-    [SerializeField]
-    private float _speed;
+    [SerializeField] private float _speed;
+    [SerializeField] private float _maxVelocity;
     
     private Vector2 _input;
     private Vector3 _moveDirection;
@@ -24,7 +24,10 @@ public class MovementController : MonoBehaviour
         _moveDirection.x = _input.x;
         _moveDirection.z = _input.y;
 
-        _rigidbody.velocity = _speed * Time.deltaTime * _moveDirection;
+        if (_rigidbody.velocity.magnitude < _maxVelocity)
+        {
+            _rigidbody.AddForce(_speed * Time.deltaTime * _moveDirection, ForceMode.Acceleration);
+        }
     }
 
     private void Start()
