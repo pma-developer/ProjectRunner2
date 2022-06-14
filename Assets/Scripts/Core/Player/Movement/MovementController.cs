@@ -6,6 +6,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class MovementController : MonoBehaviour
 {
+    [SerializeField] private Transform _orientation;
     [SerializeField] private float _speed;
     [SerializeField] private float _maxVelocity;
     
@@ -21,17 +22,23 @@ public class MovementController : MonoBehaviour
 
     private void MoveByInput()
     {
-        var selfTransform = transform;
-        _moveDirection = (selfTransform.forward * _input.y + selfTransform.right * _input.y).normalized;
+        _input.Log();
+        _moveDirection = (_orientation.forward * _input.y + _orientation.right * _input.x).normalized;
 
-        Debug.DrawLine(_moveDirection, selfTransform.position);
+        Debug.DrawLine(_orientation.position, _moveDirection, Color.red);
+        _moveDirection.Log();
         _rigidbody.AddForce(_speed * Time.deltaTime * _moveDirection, ForceMode.Force);
+    }
+
+    private void InitRigidbody()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+        //_rigidbody.freezeRotation = true;
     }
 
     private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody>();
-        
+        InitRigidbody();
         Observable.EveryUpdate()
             .Subscribe(_ => ReadInput())
             .AddTo(this);

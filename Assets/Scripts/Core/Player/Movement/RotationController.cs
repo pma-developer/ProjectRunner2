@@ -20,7 +20,7 @@ public class RotationController : MonoBehaviour
 
     private void Start()
     {
-        Cursor.lockState = CursorLockMode.Locked;
+        InitCursor();
         Observable.EveryUpdate()
             .Subscribe(_ =>
             {
@@ -28,6 +28,12 @@ public class RotationController : MonoBehaviour
                 UpdateRotations();
             })
             .AddTo(this);
+    }
+
+    private static void InitCursor()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     private void UpdateInputValues()
