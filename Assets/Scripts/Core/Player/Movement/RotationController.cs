@@ -10,7 +10,6 @@ public class RotationController : MonoBehaviour
     [SerializeField] private bool _invertY;
     [SerializeField] private float _sensitivity;
     [SerializeField] private float _xRotationBorder;
-    [SerializeField] private Transform _cameraTransform;
     [SerializeField] private Transform _playerTransform;
 
     private float _xMouseDelta;
@@ -48,6 +47,6 @@ public class RotationController : MonoBehaviour
         playerTransformRotation = Quaternion.Euler(playerTransformRotation.x, _yRotation, playerTransformRotation.z);
         
         _playerTransform.rotation = playerTransformRotation;
-        _cameraTransform.rotation = Quaternion.Euler(_xRotation, _yRotation, _cameraTransform.rotation.z);
+        transform.rotation = Quaternion.Euler(_xRotation, _yRotation, transform.rotation.z);
     }
 }

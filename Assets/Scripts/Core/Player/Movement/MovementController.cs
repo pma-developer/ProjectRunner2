@@ -21,13 +21,11 @@ public class MovementController : MonoBehaviour
 
     private void MoveByInput()
     {
-        _moveDirection.x = _input.x;
-        _moveDirection.z = _input.y;
+        var selfTransform = transform;
+        _moveDirection = (selfTransform.forward * _input.y + selfTransform.right * _input.y).normalized;
 
-        if (_rigidbody.velocity.magnitude < _maxVelocity)
-        {
-            _rigidbody.AddForce(_speed * Time.deltaTime * _moveDirection, ForceMode.Acceleration);
-        }
+        Debug.DrawLine(_moveDirection, selfTransform.position);
+        _rigidbody.AddForce(_speed * Time.deltaTime * _moveDirection, ForceMode.Force);
     }
 
     private void Start()
