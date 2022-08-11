@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class LoggingExtensions
+public static class DebuggingExtensions
 {
+    
     public static void Log(this Vector2 vector)
     {
         Debug.Log($"x : {vector.x}; y : {vector.y}");
@@ -13,4 +14,5 @@ public static class LoggingExtensions
     {
         Debug.Log($"x : {vector.x}; y : {vector.y}; z : {vector.z}");
     }
+
 }

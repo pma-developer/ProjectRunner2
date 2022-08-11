@@ -15,7 +15,7 @@ namespace Core.Installers
         {
             Container.Bind<DataPaths>().FromInstance(_dataPathsConfig).AsSingle();
             Container.Bind<SettingsPreset>().FromInstance(_settingsPreset).AsSingle();
-            Container.BindInterfacesAndSelfTo<Repository>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DataContainer>().AsSingle();
 
             Container.BindInterfacesAndSelfTo<SettingsModel>().AsSingle();
         }

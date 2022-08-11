@@ -2,7 +2,7 @@
 
 namespace Core.Data
 {
-    public class Repository : IInitializable
+    public class DataContainer : IInitializable
     {
         private DataProvider<SerializableSettingsModel> _settingsDataProvider;
         private DataPaths _dataPaths;

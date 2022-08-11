@@ -9,7 +9,7 @@ namespace Core.UI.Pages
 {
     public class SettingsPage : Page
     {
-        private Repository _repository;
+        private DataContainer _dataContainer;
         private SettingsModel _settings;
 
         [SerializeField] private Slider _volumeSlider;
