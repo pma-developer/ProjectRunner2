@@ -5,54 +5,69 @@ using UniRx;
 using UnityEditor;
 using UnityEngine;
 
-public class RotationController : MonoBehaviour
+namespace ProjectRunner.Core.MovementSystem
 {
-    [SerializeField] private bool _invertY;
-    [SerializeField] private float _sensitivity;
-    [SerializeField] private float _xRotationBorder;
-    [SerializeField] private Transform _playerTransform;
-
-    private float _xMouseDelta;
-    private float _yMouseDelta;
-
-    private float _xRotation;
-    private float _yRotation;
-
-    private void Start()
+    public class RotationController : MonoBehaviour
     {
-        InitCursor();
-        Observable.EveryUpdate()
-            .Subscribe(_ =>
+        [SerializeField] private bool _invertY;
+        [SerializeField] private float _sensitivity;
+        [SerializeField] private float _xRotationBorder;
+        [SerializeField] private Transform _playerTransform;
+
+        private float _xMouseDelta;
+        private float _yMouseDelta;
+
+        private float _xRotation;
+        private float _yRotation;
+
+        private void Start()
+        {
+            InitCursor();
+            /*Observable.EveryUpdate()
+                .Subscribe(_ =>
+                {
+                    UpdateInputValues();
+                    UpdateRotations();
+                })
+                .AddTo(this);*/
+        }
+
+        private void Update()
+        {
+            UpdateInputValues();
+            UpdateRotations();
+        }
+
+        private static void InitCursor()
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+
+        private void UpdateInputValues()
+        {
+            _xMouseDelta = Input.GetAxis("Mouse X") * _sensitivity * Time.deltaTime;
+            _yMouseDelta = Input.GetAxis("Mouse Y") * _sensitivity * Time.deltaTime;
+
+            if (_xMouseDelta != 0 || _yMouseDelta != 0)
             {
-                UpdateInputValues();
-                UpdateRotations();
-            })
-            .AddTo(this);
-    }
+                Debug.Log($"x mouse {_xMouseDelta}; y mouse {_yMouseDelta};");
+            }
+        }
 
-    private static void InitCursor()
-    {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
+        private void UpdateRotations()
+        {
+            _yRotation += _xMouseDelta;
+            _xRotation += _yMouseDelta * (-1 + 2 * Convert.ToInt32(_invertY));
 
-    private void UpdateInputValues()
-    {
-        _xMouseDelta = Input.GetAxisRaw("Mouse X") * _sensitivity * Time.deltaTime;
-        _yMouseDelta = Input.GetAxisRaw("Mouse Y") * _sensitivity * Time.deltaTime;
-    }
+            _xRotation = Mathf.Clamp(_xRotation, -_xRotationBorder, _xRotationBorder);
 
-    private void UpdateRotations()
-    {
-        _yRotation += _xMouseDelta;
-        _xRotation += _yMouseDelta * ((-1) + 2 * Convert.ToInt32(_invertY));
+            var playerTransformRotation = _playerTransform.rotation;
+            playerTransformRotation =
+                Quaternion.Euler(playerTransformRotation.x, _yRotation, playerTransformRotation.z);
 
-        _xRotation = Mathf.Clamp(_xRotation, -_xRotationBorder, _xRotationBorder);
-
-        var playerTransformRotation = _playerTransform.rotation;
-        playerTransformRotation = Quaternion.Euler(playerTransformRotation.x, _yRotation, playerTransformRotation.z);
-        
-        _playerTransform.rotation = playerTransformRotation;
-        transform.rotation = Quaternion.Euler(_xRotation, _yRotation, transform.rotation.z);
+            _playerTransform.rotation = playerTransformRotation;
+            transform.rotation = Quaternion.Euler(_xRotation, _yRotation, transform.rotation.z);
+        }
     }
 }

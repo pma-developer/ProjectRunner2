@@ -3,12 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraFollow : MonoBehaviour
+namespace ProjectRunner.Core.MovementSystem
 {
-    [SerializeField] private Transform _followTransform;
-
-    private void LateUpdate()
+    public class CameraFollow : MonoBehaviour
     {
-        transform.position = _followTransform.position;
+        [SerializeField] private Transform _followTransform;
+
+        private void LateUpdate()
+        {
+            transform.position = _followTransform.position;
+        }
     }
 }

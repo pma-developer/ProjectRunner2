@@ -5,71 +5,104 @@ using TMPro;
 using UniRx;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
-public class MovementController : MonoBehaviour
+
+namespace ProjectRunner.Core.MovementSystem
 {
-    [SerializeField] private Transform _orientation;
-    [SerializeField] private float _speed;
-    [SerializeField] private float _maxVelocity;
-    [SerializeField] private CapsuleCollider _playerCollider;
-    
-    private Vector2 _input;
-    private Vector3 _moveDirection;
-    private Rigidbody _rigidbody;
-
-    private event Action OnSpaceDown;
-    
-    private void ReadInput()
+    [RequireComponent(typeof(Rigidbody))]
+    public class MovementController : MonoBehaviour
     {
-        _input.x = Input.GetAxis("Horizontal");
-        _input.y = Input.GetAxis("Vertical");
-        HandleSpaceBar();
-    }
+        [SerializeField] private Transform _orientation;
+        [SerializeField] private float _movingForce;
+        [SerializeField] private float _jumpingForce;
+        [SerializeField] private float _maxVelocity;
+        [SerializeField] private float _airForceMultiplier;
 
-    private void HandleSpaceBar()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        [SerializeField] private float _requiredDistanceToEarthToJump;
+        [SerializeField] private CapsuleCollider _playerCollider;
+
+        private bool _isGrounded;
+        private Vector2 _input;
+        private Vector3 _moveDirection;
+        private Rigidbody _rigidbody;
+
+        private event Action OnSpaceDown;
+
+        private void ReadInput()
         {
-            OnSpaceDown?.Invoke();
+            _input.x = Input.GetAxisRaw("Horizontal");
+            _input.y = Input.GetAxisRaw("Vertical");
+            HandleSpaceBar();
         }
-    }
 
-    private bool TryJump()
-    {
-        
-        if (Physics.Raycast(transform.position, Vector3.down, out var hit, _playerCollider.height/2 + 0.01f))
+        private void HandleSpaceBar()
         {
-            Debug.Log($"{hit.collider}");
-            return true;
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                OnSpaceDown?.Invoke();
+            }
         }
-        Debug.Log($"{hit.collider}");
-        return false;
-    }
 
-    private void MoveByInput()
-    {
-        _moveDirection = (_orientation.forward * _input.y + _orientation.right * _input.x).normalized;
-        
-        if(_rigidbody.velocity.magnitude < _maxVelocity)
-            _rigidbody.AddForce(_speed * Time.deltaTime * _moveDirection, ForceMode.Force);
-    }
+        private void Jump()
+        {
+            _rigidbody.AddForce(_jumpingForce * Vector3.up, ForceMode.Impulse);
+        }
 
-    private void InitRigidbody()
-    {
-        _rigidbody = GetComponent<Rigidbody>();
-        //_rigidbody.freezeRotation = true;
-    }
+        private void UpdateIsGrounded()
+        {
+            _isGrounded = Physics.Raycast(transform.position, Vector3.down,
+                _playerCollider.height / 2 + _requiredDistanceToEarthToJump);
+        }
 
-    private void Start()
-    {
-        InitRigidbody();
-        OnSpaceDown += () => TryJump();
-        Observable.EveryUpdate()
-            .Subscribe(_ => ReadInput())
-            .AddTo(this);
-        
-        Observable.EveryFixedUpdate()
-            .Subscribe(_ => MoveByInput())
-            .AddTo(this);
+        private void JumpIfGrounded()
+        {
+            if (_isGrounded)
+                Jump();
+        }
+
+        private void MoveByInput()
+        {
+            _moveDirection = (_orientation.forward * _input.y + _orientation.right * _input.x).normalized;
+
+            var resultMovingForce = _movingForce * 10f * _moveDirection;
+            if (_isGrounded)
+                _rigidbody.AddForce(resultMovingForce, ForceMode.Force);
+            else
+                _rigidbody.AddForce(_airForceMultiplier * resultMovingForce, ForceMode.Force);
+        }
+
+        private void LimitVelocity()
+        {
+            var velocity = _rigidbody.velocity;
+            var horizontalVelocity = new Vector2(velocity.x, velocity.z);
+            if (horizontalVelocity.magnitude > _maxVelocity)
+            {
+                var limitedVelocity = horizontalVelocity.normalized * _maxVelocity;
+                _rigidbody.velocity = new Vector3(limitedVelocity.x, _rigidbody.velocity.y, limitedVelocity.y);
+            }
+        }
+
+        private void InitRigidbody()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+        }
+
+
+        private void Update()
+        {
+            ReadInput();
+        }
+
+        private void FixedUpdate()
+        {
+            UpdateIsGrounded();
+            MoveByInput();
+            LimitVelocity();
+        }
+
+        private void Start()
+        {
+            InitRigidbody();
+            OnSpaceDown += JumpIfGrounded;
+        }
     }
 }
