@@ -13,7 +13,7 @@ namespace Core.Data
 
    public class SettingsModel : IInitializable
    {
-      private DataContainer _dataContainer;
+      private readonly DataContainer _dataContainer;
       public ReadOnlyReactiveProperty<bool> MuteAudio { get; private set;}
       public ReactiveProperty<float> AudioVolume { get; private set;}
 

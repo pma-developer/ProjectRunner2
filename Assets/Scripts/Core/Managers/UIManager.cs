@@ -45,9 +45,8 @@ public class UIManager : MonoBehaviour, IInitializable
 
     public void Initialize()
     {
-        Debug.Log("Initialize");
-        var pagesGO = transform.GetChild(0);
-        var pagesComponents = pagesGO.GetComponentsInChildren<Page>();
+        var pagesGameObject = transform.GetChild(0);
+        var pagesComponents = pagesGameObject.GetComponentsInChildren<Page>();
         _pages = pagesComponents.ToList();
 
         foreach (var page in _pages)

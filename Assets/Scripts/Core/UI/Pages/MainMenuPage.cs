@@ -18,7 +18,7 @@ namespace Core.UI.Pages
         private SettingsModel _settingsModel;
 
         [Inject]
-        private void Init(SettingsModel settingsModel)
+        private void Construct(SettingsModel settingsModel)
         {
             _settingsModel = settingsModel;
         }
@@ -32,8 +32,7 @@ namespace Core.UI.Pages
             _exitBtn.onClick.AsObservable().Subscribe(_ => Debug.Log("Should exit")).AddTo(this);
             _settingsModel.MuteAudio.SubscribeWithState( _audioInfoText, (isMuted, t) =>
             {
-                if (isMuted) t.text = "Muted";
-                else t.text = "Unmuted";
+                t.text = isMuted ? "Muted" : "Unmuted";
             }).AddTo(this);
         }
 

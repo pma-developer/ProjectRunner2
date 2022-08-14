@@ -48,11 +48,6 @@ namespace ProjectRunner.Core.MovementSystem
         {
             _xMouseDelta = Input.GetAxis("Mouse X") * _sensitivity * Time.deltaTime;
             _yMouseDelta = Input.GetAxis("Mouse Y") * _sensitivity * Time.deltaTime;
-
-            if (_xMouseDelta != 0 || _yMouseDelta != 0)
-            {
-                Debug.Log($"x mouse {_xMouseDelta}; y mouse {_yMouseDelta};");
-            }
         }
 
         private void UpdateRotations()
