@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Core.DamageSystem;
+using UniRx;
 using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
@@ -10,16 +11,21 @@ namespace Core.WeaponSystem
 {
     public class Projectile : MonoBehaviour, IPoolable<Damage, IMemoryPool>, IDisposable
     {
+        [SerializeField] private float _maxLifetime;
+
         private IMemoryPool _memoryPool;
         private DamageManager _damageManager;
-        
+
         private Damage _damage;
 
         private Rigidbody _rigidbody;
 
+        private CompositeDisposable _timerDisposable;
+
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
+            _timerDisposable = new CompositeDisposable();
         }
 
         public void AddForce(Vector3 force)
@@ -33,7 +39,8 @@ namespace Core.WeaponSystem
             {
                 _damageManager.TryDealDamage(_damage, damageReceiver);
             }
-            _memoryPool.Despawn(this);
+
+            Dispose();
         }
 
         [Inject]
@@ -44,6 +51,7 @@ namespace Core.WeaponSystem
 
         public void OnDespawned()
         {
+            _timerDisposable.Clear();
             _memoryPool = null;
             _damage = null;
             _rigidbody.velocity = Vector3.zero;
@@ -53,6 +61,9 @@ namespace Core.WeaponSystem
         {
             _memoryPool = memoryPool;
             _damage = damage;
+
+            Observable.Timer(TimeSpan.FromSeconds(_maxLifetime)).Subscribe(x => Dispose())
+                .AddTo(_timerDisposable);
         }
 
         public void Dispose()
