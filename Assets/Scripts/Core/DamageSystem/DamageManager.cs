@@ -1,12 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
-using Core.DamageSystem;
-using UnityEngine;
-
-public class DamageManager
+namespace Core.DamageSystem
 {
-    public bool TryDealDamage(Damage damage, IDamageReceiver damageReceiver)
+    public class DamageManager
     {
-        return true;
+        public bool TryDealDamage(Damage damage, IDamageReceiver damageReceiver)
+        {
+            damageReceiver.ReceiveDamage(damage);
+            return true;
+        }
     }
 }

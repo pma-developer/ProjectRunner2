@@ -1,18 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public class IDamageReceiver : MonoBehaviour
+namespace Core.DamageSystem
 {
-    // Start is called before the first frame update
-    void Start()
+    public interface IDamageReceiver
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public void ReceiveDamage(Damage damage);
     }
 }
