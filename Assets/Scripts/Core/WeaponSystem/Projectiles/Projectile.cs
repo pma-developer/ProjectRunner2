@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using Core.DamageSystem;
 using UniRx;
-using Unity.VisualScripting;
 using UnityEngine;
 using Zenject;
 
@@ -20,12 +17,14 @@ namespace Core.WeaponSystem
 
         private Rigidbody _rigidbody;
 
-        private CompositeDisposable _timerDisposable;
+        private CompositeDisposable _disposables;
+        protected Subject<Unit> _disposeSubject;
 
         private void Awake()
         {
             _rigidbody = GetComponent<Rigidbody>();
-            _timerDisposable = new CompositeDisposable();
+            _disposables = new();
+            _disposeSubject = new();
         }
 
         public void AddForce(Vector3 force)
@@ -33,14 +32,14 @@ namespace Core.WeaponSystem
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
-        private void OnCollisionEnter(Collision collision)
+        protected virtual void OnCollisionEnter(Collision collision)
         {
             if (collision.gameObject.TryGetComponent<IDamageReceiver>(out var damageReceiver))
             {
                 _damageManager.TryDealDamage(_damage, damageReceiver);
             }
 
-            Dispose();
+            _disposeSubject.OnNext(Unit.Default);
         }
 
         [Inject]
@@ -51,7 +50,7 @@ namespace Core.WeaponSystem
 
         public void OnDespawned()
         {
-            _timerDisposable.Clear();
+            _disposables.Clear();
             _memoryPool = null;
             _damage = null;
             _rigidbody.velocity = Vector3.zero;
@@ -61,9 +60,10 @@ namespace Core.WeaponSystem
         {
             _memoryPool = memoryPool;
             _damage = damage;
-
-            Observable.Timer(TimeSpan.FromSeconds(_maxLifetime)).Subscribe(x => Dispose())
-                .AddTo(_timerDisposable);
+            Observable.Amb(
+                Observable.Timer(TimeSpan.FromSeconds(_maxLifetime)).AsUnitObservable(),
+                _disposeSubject.AsObservable()
+            ).Subscribe(_ => Dispose()).AddTo(_disposables);
         }
 
         public void Dispose()
