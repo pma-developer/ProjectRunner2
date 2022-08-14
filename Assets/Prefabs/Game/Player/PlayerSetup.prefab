@@ -411,10 +411,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _orientation: {fileID: 3924211371874296091}
-  _movingForce: 100
+  _movingForce: 30
   _jumpingForce: 10
-  _maxVelocity: 10
+  _maxVelocity: 8
   _airForceMultiplier: 0.8
+  _onGroundDrag: 4
   _requiredDistanceToEarthToJump: 0.2
   _playerCollider: {fileID: 3924211371755602553}
 --- !u!114 &3924211372879908553
@@ -611,6 +612,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3172060141753442513, guid: aafe4ba823a2d0e488178abaeb1e61aa,
+        type: 3}
+      propertyPath: _movingParent
+      value: 
+      objectReference: {fileID: 3924211372879908555}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: aafe4ba823a2d0e488178abaeb1e61aa, type: 3}
 --- !u!4 &3363914363554603244 stripped

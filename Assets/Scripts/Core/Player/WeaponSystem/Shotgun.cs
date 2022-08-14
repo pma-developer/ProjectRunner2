@@ -16,6 +16,7 @@ namespace ProjectRunner.Core.WeaponSystem
         [Space]
         [SerializeField] private GameObject _shootingPoint;
 
+        [SerializeField] private Rigidbody _movingParent;
         [SerializeField] private Animator _animator;
         
         private float _timeFromLastShot;
@@ -35,7 +36,7 @@ namespace ProjectRunner.Core.WeaponSystem
             var projectile = Instantiate(_projectilePrefab, _shootingPoint.transform.position,
                 _shootingPoint.transform.rotation);
             projectile.GetComponent<Rigidbody>()
-                .AddForce(_shootingImpulseForce * projectile.transform.forward, ForceMode.Impulse);
+                .AddForce(_shootingImpulseForce * projectile.transform.forward + _movingParent.velocity, ForceMode.Impulse);
         }
     }
 }
