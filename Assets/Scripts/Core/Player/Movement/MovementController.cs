@@ -16,6 +16,7 @@ namespace ProjectRunner.Core.MovementSystem
         [SerializeField] private float _jumpingForce;
         [SerializeField] private float _maxVelocity;
         [SerializeField] private float _airForceMultiplier;
+        [SerializeField] private float _onGroundDrag;
 
         [SerializeField] private float _requiredDistanceToEarthToJump;
         [SerializeField] private CapsuleCollider _playerCollider;
@@ -59,6 +60,14 @@ namespace ProjectRunner.Core.MovementSystem
                 Jump();
         }
 
+        private void SetDrag()
+        {
+            if (_isGrounded)
+                _rigidbody.drag = _onGroundDrag;
+            else
+                _rigidbody.drag = 0;
+        }
+        
         private void MoveByInput()
         {
             _moveDirection = (_orientation.forward * _input.y + _orientation.right * _input.x).normalized;
@@ -97,6 +106,7 @@ namespace ProjectRunner.Core.MovementSystem
             UpdateIsGrounded();
             MoveByInput();
             LimitVelocity();
+            SetDrag();
         }
 
         private void Start()
