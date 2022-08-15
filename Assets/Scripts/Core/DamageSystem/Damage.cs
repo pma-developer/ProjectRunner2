@@ -6,13 +6,13 @@ namespace Core.DamageSystem
 {
     public class Damage
     {
-        private float _value;
-        private int _ownerLayer;
+        public readonly float Value;
+        public readonly int OwnerLayer;
 
         public Damage(float value, int ownerLayer)
         {
-            _value = value;
-            _ownerLayer = ownerLayer;
+            Value = value;
+            OwnerLayer = ownerLayer;
         }
     }
 }

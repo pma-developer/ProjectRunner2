@@ -5,13 +5,12 @@ namespace Core.Installers
 {
     public class MainMenuInstaller : MonoInstaller
     {
-        [SerializeField]
-        private GameObject uiManagerPrefab;
-        
+        [SerializeField] private GameObject _uiManagerPrefab;
+
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInNewPrefab(uiManagerPrefab).AsSingle();
+            Container.BindInterfacesAndSelfTo<UIManager>().FromComponentInNewPrefab(_uiManagerPrefab).AsSingle();
         }
     }
 }
