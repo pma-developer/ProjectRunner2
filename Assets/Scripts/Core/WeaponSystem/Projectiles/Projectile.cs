@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Core.WeaponSystem
 {
-    public abstract class Projectile : MonoBehaviour, IPoolable<Damage, IMemoryPool>, IDisposable
+    public class Projectile : MonoBehaviour, IPoolable<Damage, IMemoryPool>, IDisposable
     {
         [SerializeField] private float _maxLifetime;
 
@@ -34,11 +34,11 @@ namespace Core.WeaponSystem
 
         protected virtual void OnCollisionEnter(Collision collision)
         {
-            if (collision.transform.parent.TryGetComponent<IDamageReceiver>(out var damageReceiver))
+            if (collision.transform.TryGetComponent<IDamageReceiver>(out var damageReceiver))
             {
                 _damageManager.TryDealDamage(_damage, damageReceiver);
             }
-            
+
             _disposeSubject.OnNext(Unit.Default);
         }
 
@@ -71,24 +71,23 @@ namespace Core.WeaponSystem
         {
             _memoryPool.Despawn(this);
         }
-
-        public class PoolFactory : PlaceholderFactory<Damage, Projectile>
-        {
-        }
     }
-    
-    public class ProjectileFactory : IFactory<ProjectileType, Damage, Projectile>
+
+    public class ProjectilePrefabFactory : IFactory<Projectile>
     {
         private DiContainer _container;
-
-        public ProjectileFactory(DiContainer container)
+        private GameObject _prefabToSpawn;
+        private Transform _parent;
+        
+        public ProjectilePrefabFactory(DiContainer container, GameObject prefabToSpawn, Transform parent)
         {
             _container = container;
+            _prefabToSpawn = prefabToSpawn;
+            _parent = parent;
         }
 
-        public Projectile Create(ProjectileType param1, Damage param2)
-        {
-            throw new NotImplementedException();
-        }
+        public Projectile Create() =>
+            _container.InstantiatePrefabForComponent<Projectile>(_prefabToSpawn, _parent);
     }
+
 }

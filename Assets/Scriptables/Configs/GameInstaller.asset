@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _projectilesPoolName: projectiles
   _enemiesPoolName: enemies
+  _projectilePrefabsPreset: {fileID: 11400000, guid: e0417d31d7773d746944064f51e15771,
+    type: 2}
   _projectilePrefab: {fileID: 5998998837943369558, guid: a0f1bb2392f2db74baa9b7b8e132b313,
     type: 3}
   _enemyPrefab: {fileID: 1902835018332377263, guid: f6c00c8c6e4a74c478cdc4ec79f20978,

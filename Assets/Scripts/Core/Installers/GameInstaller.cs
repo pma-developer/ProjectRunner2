@@ -11,22 +11,20 @@ namespace Core.Installers
     {
         [SerializeField] private string _projectilesPoolName;
         [SerializeField] private string _enemiesPoolName;
-        [SerializeField] private ProjectilePrefabsContainer _projectilePrefabsContainer;
+        [SerializeField] private ProjectilePrefabsPreset _projectilePrefabsPreset;
         [SerializeField] private GameObject _projectilePrefab;
         [SerializeField] private GameObject _enemyPrefab;
 
         public override void InstallBindings()
         {
             Container.Bind<DamageManager>().AsSingle();
-            
-            Container.BindFactory<Damage, Projectile, Projectile.PoolFactory>()
-                .FromMonoPoolableMemoryPool(
-                    factory =>
-                        factory.WithInitialSize(200)
-                            .FromComponentInNewPrefab(_projectilePrefab)
-                            .UnderTransformGroup(_projectilesPoolName)
-                );
-            
+
+            Container.Bind<ProjectilePrefabsPreset>().FromInstance(_projectilePrefabsPreset).AsSingle();
+
+            // Container.BindFactory<ProjectileType, Damage, Projectile, ProjectileFactory>().FromFactory<ProjectileIFactory>().NonLazy();
+            Container.BindFactory<ProjectileType, Damage, Projectile, ProjectileFactory>()
+                .FromIFactory(projectileFactory => projectileFactory.To<ProjectileIFactory>().AsCached().NonLazy());
+
             Container.BindFactory<Enemy, Enemy.Factory>()
                 .FromMonoPoolableMemoryPool(
                     factory =>

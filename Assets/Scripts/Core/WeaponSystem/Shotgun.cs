@@ -21,14 +21,13 @@ namespace Core.WeaponSystem
         [SerializeField] private Rigidbody _movingParent;
         [SerializeField] private Animator _animator;
 
-        private Projectile.PoolFactory _projectilePoolFactory;
+        private ProjectileFactory _projectilePoolFactory;
         private float _timeFromLastShot;
         private static readonly int FireHash = Animator.StringToHash("Fire");
 
         [Inject]
-        public void Construct(Projectile.PoolFactory projectilePoolFactory)
+        public void Construct(ProjectileFactory projectilePoolFactory)
         {
-            Debug.Log("injected bullet factory");
             _projectilePoolFactory = projectilePoolFactory;
         }
 
@@ -43,7 +42,7 @@ namespace Core.WeaponSystem
 
         private void SpawnBullet()
         {
-            var projectile = _projectilePoolFactory.Create(new Damage(5,0));
+            var projectile = _projectilePoolFactory.Create(ProjectileType.Bullet, new Damage(5,0));
             var projectileTF = projectile.transform;
             projectileTF.position = _shootingPoint.transform.position;
             projectileTF.rotation = _shootingPoint.transform.rotation;
