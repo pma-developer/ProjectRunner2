@@ -6,7 +6,7 @@ using Zenject;
 
 namespace Core.WeaponSystem
 {
-    public class Projectile : MonoBehaviour, IPoolable<Damage, IMemoryPool>, IDisposable
+    public abstract class Projectile : MonoBehaviour, IPoolable<Damage, IMemoryPool>, IDisposable
     {
         [SerializeField] private float _maxLifetime;
 
@@ -34,17 +34,18 @@ namespace Core.WeaponSystem
 
         protected virtual void OnCollisionEnter(Collision collision)
         {
-            if (collision.gameObject.TryGetComponent<IDamageReceiver>(out var damageReceiver))
+            if (collision.transform.parent.TryGetComponent<IDamageReceiver>(out var damageReceiver))
             {
                 _damageManager.TryDealDamage(_damage, damageReceiver);
             }
-
+            
             _disposeSubject.OnNext(Unit.Default);
         }
 
         [Inject]
         public void Construct(DamageManager damageManager)
         {
+            Debug.Log("injected");
             _damageManager = damageManager;
         }
 
@@ -71,8 +72,23 @@ namespace Core.WeaponSystem
             _memoryPool.Despawn(this);
         }
 
-        public class Factory : PlaceholderFactory<Damage, Projectile>
+        public class PoolFactory : PlaceholderFactory<Damage, Projectile>
         {
+        }
+    }
+    
+    public class ProjectileFactory : IFactory<ProjectileType, Damage, Projectile>
+    {
+        private DiContainer _container;
+
+        public ProjectileFactory(DiContainer container)
+        {
+            _container = container;
+        }
+
+        public Projectile Create(ProjectileType param1, Damage param2)
+        {
+            throw new NotImplementedException();
         }
     }
 }

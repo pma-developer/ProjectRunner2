@@ -11,6 +11,7 @@ namespace Core.Installers
     {
         [SerializeField] private string _projectilesPoolName;
         [SerializeField] private string _enemiesPoolName;
+        [SerializeField] private ProjectilePrefabsContainer _projectilePrefabsContainer;
         [SerializeField] private GameObject _projectilePrefab;
         [SerializeField] private GameObject _enemyPrefab;
 
@@ -18,7 +19,7 @@ namespace Core.Installers
         {
             Container.Bind<DamageManager>().AsSingle();
             
-            Container.BindFactory<Damage, Projectile, Projectile.Factory>()
+            Container.BindFactory<Damage, Projectile, Projectile.PoolFactory>()
                 .FromMonoPoolableMemoryPool(
                     factory =>
                         factory.WithInitialSize(200)
