@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c81602dc93b0c8f4a9d98f42f020683a, type: 3}
-  m_Name: ProjectilePrefabsPreset
+  m_Name: ProjectileTypesPreset
   m_EditorClassIdentifier: 
   ProjectilePrefabs:
     _pairsList:
