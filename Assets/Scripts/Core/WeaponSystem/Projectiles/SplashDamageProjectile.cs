@@ -6,7 +6,7 @@ namespace Core.WeaponSystem.Projectiles
 {
     public class SplashDamageProjectile : Projectile
     {
-        private float _damageSphereRadius;
+        [SerializeField] private float _damageSphereRadius;
 
         protected override void OnCollisionEnter(Collision collision)
         {
@@ -16,8 +16,7 @@ namespace Core.WeaponSystem.Projectiles
             {
                 DamageIfDamageReceiver(objectInRadius.gameObject);
             }
-            
-            base.OnCollisionEnter(collision);
+            GetDisposed();
         }
     }
 }

@@ -3,8 +3,8 @@ using Core.WeaponSystem;
 using UnityEngine;
 using Zenject;
 
-[CreateAssetMenu(fileName = "ProjectilePrefabsPreset", menuName = "InGamePresets/ProjectilePrefabsPreset")]
-public class ProjectilePrefabsPreset : ScriptableObject
+[CreateAssetMenu(fileName = "ProjectileTypesPreset", menuName = "InGamePresets/ProjectileTypesPreset")]
+public class ProjectileTypesPreset : ScriptableObject
 {
     [SerializeField] public ReadonlyRuntimeDictionary<ProjectileType, GameObject> ProjectilePrefabs;
     [SerializeField] public ReadonlyRuntimeDictionary<ProjectileType, int> InitialPoolSizes;
