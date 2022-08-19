@@ -12,11 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9fb9def11d1e60e42ad75085841156c1, type: 3}
   m_Name: GameInstaller
   m_EditorClassIdentifier: 
-  _projectilesPoolName: projectiles
-  _enemiesPoolName: enemies
-  _projectilePrefabsPreset: {fileID: 11400000, guid: e0417d31d7773d746944064f51e15771,
+  _enemyTypesPreset: {fileID: 11400000, guid: 62b5fa65f9fe4a845b21f3992d99c698, type: 2}
+  _projectileTypesPreset: {fileID: 11400000, guid: e0417d31d7773d746944064f51e15771,
     type: 2}
-  _projectilePrefab: {fileID: 5998998837943369558, guid: a0f1bb2392f2db74baa9b7b8e132b313,
-    type: 3}
-  _enemyPrefab: {fileID: 1902835018332377263, guid: f6c00c8c6e4a74c478cdc4ec79f20978,
-    type: 3}

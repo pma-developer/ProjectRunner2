@@ -1,39 +1,34 @@
 using Core.DamageSystem;
 using Core.EnemySystem;
+using Core.EnemySystem.Factories;
 using Core.WeaponSystem;
 using Core.WeaponSystem.Projectiles;
 using Core.WeaponSystem.Projectiles.Factories;
 using UnityEngine;
 using Zenject;
+using Zenject.SpaceFighter;
 
 namespace Core.Installers
 {
     [CreateAssetMenu(fileName = "GameInstaller", menuName = "Installers/GameInstaller")]
     public class GameInstaller : ScriptableObjectInstaller
     {
-        [SerializeField] private string _projectilesPoolName;
-        [SerializeField] private string _enemiesPoolName;
-        [SerializeField] private ProjectilePrefabsPreset _projectilePrefabsPreset;
-        [SerializeField] private GameObject _projectilePrefab;
-        [SerializeField] private GameObject _enemyPrefab;
+        [SerializeField] private EnemyTypesPreset _enemyTypesPreset; 
+        [SerializeField] private ProjectileTypesPreset _projectileTypesPreset;
 
         public override void InstallBindings()
         {
             Container.Bind<DamageManager>().AsSingle();
 
-            Container.Bind<ProjectilePrefabsPreset>().FromInstance(_projectilePrefabsPreset).AsSingle();
+            Container.Bind<ProjectileTypesPreset>().FromInstance(_projectileTypesPreset).AsSingle();
+            Container.Bind<EnemyTypesPreset>().FromInstance(_enemyTypesPreset).AsSingle();
 
-            // Container.BindFactory<ProjectileType, Damage, Projectile, ProjectileFactory>().FromFactory<ProjectileIFactory>().NonLazy();
             Container.BindFactory<ProjectileType, Damage, Projectile, ProjectileFactory>()
-                .FromIFactory(projectileFactory => projectileFactory.To<ProjectileIFactory>().AsCached().NonLazy());
+                .FromIFactory(factory => factory.To<ProjectileIFactory>().AsCached().NonLazy());
 
-            Container.BindFactory<Enemy, Enemy.Factory>()
-                .FromMonoPoolableMemoryPool(
-                    factory =>
-                        factory.WithInitialSize(20)
-                            .FromComponentInNewPrefab(_enemyPrefab)
-                            .UnderTransformGroup(_enemiesPoolName)
-                );
+            
+            Container.BindFactory<EnemyType, Enemy, EnemyFactory>()
+                .FromIFactory(factory => factory.To<EnemyIFactory>().AsCached().NonLazy());
         }
     }
 }

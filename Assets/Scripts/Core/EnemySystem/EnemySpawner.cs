@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Core.EnemySystem;
+using Core.EnemySystem.Factories;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -14,10 +15,10 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private float _spawnY;
     [SerializeField] private float _spawnCooldownInMilliseconds;
 
-    private Enemy.Factory _enemyFactory;
+    private EnemyFactory _enemyFactory;
 
     [Inject]
-    private void Construct(Enemy.Factory enemyFactory)
+    private void Construct(EnemyFactory enemyFactory)
     {
         _enemyFactory = enemyFactory;
     }
@@ -51,7 +52,7 @@ public class EnemySpawner : MonoBehaviour
         var leftBottomPosition = new Vector3(leftBottomX, _spawnY, leftBottomZ);
         var rightTopPosition = new Vector3(rightTopX, _spawnY, rightTopZ);
 
-        var enemy = _enemyFactory.Create();
+        var enemy = _enemyFactory.Create(EnemyType.DefaultEnemy);
         enemy.transform.position = GetRandomPositionFromSortedBounds(leftBottomPosition, rightTopPosition);
     }
 }

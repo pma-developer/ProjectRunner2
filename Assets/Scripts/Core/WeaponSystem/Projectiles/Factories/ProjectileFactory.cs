@@ -12,21 +12,21 @@ namespace Core.WeaponSystem.Projectiles.Factories
     public class ProjectileIFactory : IFactory<ProjectileType, Damage, Projectile>, IInitializable
     {
         private DiContainer _diContainer;
-        private ProjectilePrefabsPreset _projectilePrefabsPreset;
+        private ProjectileTypesPreset _projectileTypesPreset;
 
         private Dictionary<ProjectileType, MonoPoolableMemoryPool<Damage, IMemoryPool, Projectile>> _projectilePools;
 
 
         [Inject]
-        private void Construct(DiContainer diContainer, ProjectilePrefabsPreset projectilePrefabsPreset)
+        private void Construct(DiContainer diContainer, ProjectileTypesPreset projectileTypesPreset)
         {
             _diContainer = diContainer;
-            _projectilePrefabsPreset = projectilePrefabsPreset;
+            _projectileTypesPreset = projectileTypesPreset;
             _projectilePools = new();
             Initialize();
         }
 
-        private GameObject InstantiateEmptyGameObject(string name)
+        private GameObject GetEmptyGameObject(string name)
         {
             var parentGameObject = new GameObject(name);
             parentGameObject.name = name;
@@ -36,22 +36,23 @@ namespace Core.WeaponSystem.Projectiles.Factories
 
         public void Initialize()
         {
-            foreach (var (projectileType, projectilePrefab) in _projectilePrefabsPreset.ProjectilePrefabs)
+            foreach (var (projectileType, projectilePrefab) in _projectileTypesPreset.ProjectilePrefabs)
             {
                 var settings = new MemoryPoolSettings(
-                    _projectilePrefabsPreset.InitialPoolSizes.GetValue(projectileType),
+                    _projectileTypesPreset.InitialPoolSizes.GetValue(projectileType),
                     int.MaxValue,
                     PoolExpandMethods.Double
                 );
 
-                var parentGameObject = InstantiateEmptyGameObject(projectileType.ToString());
-                
+                var parentGameObject = GetEmptyGameObject(projectileType.ToString());
+
                 var projectilePool = _diContainer.Instantiate<MonoPoolableMemoryPool<Damage, IMemoryPool, Projectile>>(
                     new object[]
                     {
                         settings,
                         new ProjectilePrefabFactory(_diContainer, projectilePrefab, parentGameObject.transform)
-                    });
+                    }
+                );
 
                 _projectilePools.Add(projectileType, projectilePool);
             }

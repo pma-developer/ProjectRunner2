@@ -18,21 +18,15 @@ namespace Core.WeaponSystem.Projectiles
         private Rigidbody _rigidbody;
 
         private CompositeDisposable _disposables;
-        protected Subject<Unit> _disposeSubject;
+        private Subject<Unit> _disposeSubject;
 
-        private void Awake()
-        {
-            _rigidbody = GetComponent<Rigidbody>();
-            _disposables = new();
-            _disposeSubject = new();
-        }
 
         public void AddForce(Vector3 force)
         {
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
-        private void GetDisposed() => _disposeSubject.OnNext(Unit.Default);
+        protected void GetDisposed() => _disposeSubject.OnNext(Unit.Default);
 
         protected void DamageIfDamageReceiver(GameObject gameObjectToDamage)
         {
@@ -40,10 +34,16 @@ namespace Core.WeaponSystem.Projectiles
             {
                 _damageManager.TryDealDamage(_damage, damageReceiver);
             }
+            else if (gameObjectToDamage.transform.parent is not null &&
+                     gameObjectToDamage.transform.parent.TryGetComponent<IDamageReceiver>(out var parentDamageReceiver))
+            {
+                _damageManager.TryDealDamage(_damage, parentDamageReceiver);
+            }
         }
 
         protected virtual void OnCollisionEnter(Collision collision)
         {
+            Debug.Log($"entered {collision.gameObject.name}");
             DamageIfDamageReceiver(collision.gameObject);
             GetDisposed();
         }
@@ -54,12 +54,19 @@ namespace Core.WeaponSystem.Projectiles
             _damageManager = damageManager;
         }
 
+        private void Awake()
+        {
+            _rigidbody = GetComponent<Rigidbody>();
+            _disposables = new();
+            _disposeSubject = new();
+        }
+
         public void OnDespawned()
         {
+            _rigidbody.velocity = Vector3.zero;
             _disposables.Clear();
             _memoryPool = null;
             _damage = null;
-            _rigidbody.velocity = Vector3.zero;
         }
 
         public void OnSpawned(Damage damage, IMemoryPool memoryPool)
@@ -77,6 +84,4 @@ namespace Core.WeaponSystem.Projectiles
             _memoryPool.Despawn(this);
         }
     }
-
-
 }

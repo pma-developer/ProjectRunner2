@@ -52,10 +52,6 @@ namespace Core.EnemySystem
             _hp?.Dispose();
             _memoryPool.Despawn(this);
         }
-        
-        public class Factory : PlaceholderFactory<Enemy>
-        {
-        }
 
     }
 }
