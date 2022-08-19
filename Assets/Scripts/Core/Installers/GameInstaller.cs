@@ -1,6 +1,8 @@
 using Core.DamageSystem;
 using Core.EnemySystem;
 using Core.WeaponSystem;
+using Core.WeaponSystem.Projectiles;
+using Core.WeaponSystem.Projectiles.Factories;
 using UnityEngine;
 using Zenject;
 

@@ -4,7 +4,7 @@ using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace Core.WeaponSystem
+namespace Core.WeaponSystem.Projectiles
 {
     public class Projectile : MonoBehaviour, IPoolable<Damage, IMemoryPool>, IDisposable
     {
@@ -32,20 +32,25 @@ namespace Core.WeaponSystem
             _rigidbody.AddForce(force, ForceMode.Impulse);
         }
 
-        protected virtual void OnCollisionEnter(Collision collision)
+        private void GetDisposed() => _disposeSubject.OnNext(Unit.Default);
+
+        protected void DamageIfDamageReceiver(GameObject gameObjectToDamage)
         {
-            if (collision.transform.TryGetComponent<IDamageReceiver>(out var damageReceiver))
+            if (gameObjectToDamage.TryGetComponent<IDamageReceiver>(out var damageReceiver))
             {
                 _damageManager.TryDealDamage(_damage, damageReceiver);
             }
+        }
 
-            _disposeSubject.OnNext(Unit.Default);
+        protected virtual void OnCollisionEnter(Collision collision)
+        {
+            DamageIfDamageReceiver(collision.gameObject);
+            GetDisposed();
         }
 
         [Inject]
         public void Construct(DamageManager damageManager)
         {
-            Debug.Log("injected");
             _damageManager = damageManager;
         }
 
@@ -73,21 +78,5 @@ namespace Core.WeaponSystem
         }
     }
 
-    public class ProjectilePrefabFactory : IFactory<Projectile>
-    {
-        private DiContainer _container;
-        private GameObject _prefabToSpawn;
-        private Transform _parent;
-        
-        public ProjectilePrefabFactory(DiContainer container, GameObject prefabToSpawn, Transform parent)
-        {
-            _container = container;
-            _prefabToSpawn = prefabToSpawn;
-            _parent = parent;
-        }
-
-        public Projectile Create() =>
-            _container.InstantiatePrefabForComponent<Projectile>(_prefabToSpawn, _parent);
-    }
 
 }
