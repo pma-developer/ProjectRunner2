@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7098551529653409654}
   - component: {fileID: 7098551529653409655}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: EnemySpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7098551529667166140}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FirstBound
   m_TagString: Untagged
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
@@ -90,7 +90,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7098551530484927426}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: SecondBound
   m_TagString: Untagged
   m_Icon: {fileID: 7866945982896999795, guid: 0000000000000000d000000000000000, type: 0}

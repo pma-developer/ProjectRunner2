@@ -26,7 +26,7 @@ namespace Core.Utils
             }
         }
 
-        public TValue GetValue(TKey projectileType)
+        public TValue GetValue(TKey key)
         {
             if (_actualDictionary is null)
             {
@@ -34,7 +34,7 @@ namespace Core.Utils
             }
 
 
-            return _actualDictionary[projectileType];
+            return _actualDictionary[key];
         }
 
         [Serializable]

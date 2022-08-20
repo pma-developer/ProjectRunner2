@@ -250,6 +250,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: EnemySpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 7098551529653409648, guid: c7647856fd872ed44a4cdd58600b9da4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7098551529653409654, guid: c7647856fd872ed44a4cdd58600b9da4,
         type: 3}
       propertyPath: m_RootOrder
@@ -303,6 +308,16 @@ PrefabInstance:
     - target: {fileID: 7098551529653409654, guid: c7647856fd872ed44a4cdd58600b9da4,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7098551529667166141, guid: c7647856fd872ed44a4cdd58600b9da4,
+        type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7098551530484927427, guid: c7647856fd872ed44a4cdd58600b9da4,
+        type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -648,11 +663,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerSetup
-      objectReference: {fileID: 0}
-    - target: {fileID: 3924211372879908554, guid: d7e27d9f29f963643855215168948419,
-        type: 3}
-      propertyPath: _onGroundDrag
-      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d7e27d9f29f963643855215168948419, type: 3}

@@ -13,15 +13,18 @@ namespace Core.Installers
     [CreateAssetMenu(fileName = "GameInstaller", menuName = "Installers/GameInstaller")]
     public class GameInstaller : ScriptableObjectInstaller
     {
+        [SerializeField] private DamageLayersPreset _damageLayersPreset;
         [SerializeField] private EnemyTypesPreset _enemyTypesPreset; 
         [SerializeField] private ProjectileTypesPreset _projectileTypesPreset;
 
         public override void InstallBindings()
         {
-            Container.Bind<DamageManager>().AsSingle();
-
+            Container.Bind<DamageLayersPreset>().FromInstance(_damageLayersPreset).AsSingle();
             Container.Bind<ProjectileTypesPreset>().FromInstance(_projectileTypesPreset).AsSingle();
             Container.Bind<EnemyTypesPreset>().FromInstance(_enemyTypesPreset).AsSingle();
+            
+            Container.Bind<DamageManager>().AsSingle();
+
 
             Container.BindFactory<ProjectileType, Damage, Projectile, ProjectileFactory>()
                 .FromIFactory(factory => factory.To<ProjectileIFactory>().AsCached().NonLazy());

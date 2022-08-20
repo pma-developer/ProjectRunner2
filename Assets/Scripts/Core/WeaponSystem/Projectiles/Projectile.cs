@@ -43,7 +43,6 @@ namespace Core.WeaponSystem.Projectiles
 
         protected virtual void OnCollisionEnter(Collision collision)
         {
-            Debug.Log($"entered {collision.gameObject.name}");
             DamageIfDamageReceiver(collision.gameObject);
             GetDisposed();
         }

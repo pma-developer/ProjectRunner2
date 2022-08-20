@@ -8,13 +8,12 @@ namespace Core.WeaponSystem
 {
     public class Shotgun : MonoBehaviour, IWeapon
     {
-        
         [SerializeField] private float _shootingImpulseForce;
-        [Tooltip("Time between two shots in seconds")]
-        [SerializeField] private float _shootingCooldown;
 
-        [Space]
-        [SerializeField] private GameObject _shootingPoint;
+        [Tooltip("Time between two shots in seconds")] [SerializeField]
+        private float _shootingCooldown;
+
+        [Space] [SerializeField] private GameObject _shootingPoint;
 
         [SerializeField] private Rigidbody _movingParent;
         [SerializeField] private Animator _animator;
@@ -32,7 +31,7 @@ namespace Core.WeaponSystem
         public void Fire()
         {
             if (Time.time < _shootingCooldown + _timeFromLastShot) return;
-            
+
             SpawnBullet();
             _animator.SetTrigger(FireHash);
             _timeFromLastShot = Time.time;
@@ -40,11 +39,12 @@ namespace Core.WeaponSystem
 
         private void SpawnBullet()
         {
-            var projectile = _projectilePoolFactory.Create(ProjectileType.Bullet, new Damage(5,0));
+            var projectile =
+                _projectilePoolFactory.Create(ProjectileType.Bullet, new Damage(5, 0, gameObject.GetHashCode(),TargetsType.AllExceptSelf));
             var projectileTF = projectile.transform;
             projectileTF.position = _shootingPoint.transform.position;
             projectileTF.rotation = _shootingPoint.transform.rotation;
-            
+
             projectile.AddForce(_shootingImpulseForce * projectileTF.forward + _movingParent.velocity);
         }
     }

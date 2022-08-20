@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7154173969195695791}
   - component: {fileID: 3144480440209676761}
   - component: {fileID: 9216682176389088975}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -93,7 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7553879890575508137}
   - component: {fileID: -3038913184111157513}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: BigEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -140,7 +140,7 @@ GameObject:
   - component: {fileID: 5254622889264390785}
   - component: {fileID: 8193695779261683827}
   - component: {fileID: 1844906350260911253}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 3945600521120808104}
   - component: {fileID: 3481992313371668167}
   - component: {fileID: 5453002915131190082}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

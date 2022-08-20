@@ -33,6 +33,9 @@ namespace Core.EnemySystem
             _hp.Value -= damage.Value;
         }
 
+        public int GetLayer() => gameObject.layer;
+        public int GetSelfHashCode() => gameObject.GetHashCode();
+
         public void OnDespawned()
         {
             _memoryPool = null;
@@ -40,6 +43,7 @@ namespace Core.EnemySystem
 
         public void OnSpawned(IMemoryPool pool)
         {
+            Debug.Log(GetLayer());
             _memoryPool = pool;
             _hp = new ReactiveProperty<float>();
             _hp.Value = _startHp;
